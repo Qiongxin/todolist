@@ -7,7 +7,7 @@ exports.getDate = () => {
     day: "numeric",
     month: "long"
   };
-
+  console.log(today.toLocaleDateString("en-US", options))
   return today.toLocaleDateString("en-US", options)
 
 }
