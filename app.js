@@ -1,14 +1,16 @@
+require('dotenv').config()
 const express = require("express");
 const date = require(__dirname + "/date.js");
 const mongoose = require("mongoose")
 const _ = require("lodash")
 const app = express();
+const PORT = process.env.PORT || 3000
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded())
 app.use(express.static("public"));
-mongoose.set('strictQuery', true)
-mongoose.connect('mongodb+srv://esther:esther123@cluster0.ykiaf0b.mongodb.net/todolistDB?retryWrites=true&w=majority')
+mongoose.set('strictQuery', false)
+mongoose.connect(process.env.MONGO_URI)
 
 const {Schema, model} = mongoose
 
@@ -126,6 +128,6 @@ app.get("/:listName", function(req,res){
 });
 
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+app.listen(PORT, function() {
+  console.log(`Server started on port ${PORT}`);
 });
