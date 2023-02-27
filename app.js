@@ -10,7 +10,16 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded())
 app.use(express.static("public"));
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.MONGO_URI)
+
+const connectDB = async() => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI)
+    console.log(`MongoDB Connected: ${conn.connection.host}`)
+  } catch(err) {
+    console.log(err)
+    process.exit(1)
+  }
+}
 
 const {Schema, model} = mongoose
 
@@ -127,7 +136,8 @@ app.get("/:listName", function(req,res){
   })
 });
 
-
-app.listen(PORT, function() {
-  console.log(`Server started on port ${PORT}`);
-});
+connectDB().then(() => {
+  app.listen(PORT, function() {
+    console.log(`Server started on port ${PORT}`);
+  });
+}) 
